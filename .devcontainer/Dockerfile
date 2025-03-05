@@ -22,8 +22,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 RUN if ! php -m | grep -q xdebug; then pecl install xdebug && docker-php-ext-enable xdebug; fi
 
 
-# Set working directory
-WORKDIR /workspace
+
+# Définir le dossier de travail
+WORKDIR /workspace/auth-methods
 
 # Expose ports
 EXPOSE 8000 5432
