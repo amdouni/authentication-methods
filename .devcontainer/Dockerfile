@@ -17,8 +17,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Node.js and Yarn
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g yarn
-
+    if ! command -v yarn > /dev/null; then npm install -g yarn; fi
 # Xdebug for debugging
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
