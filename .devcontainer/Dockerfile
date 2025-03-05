@@ -29,4 +29,4 @@ WORKDIR /workspace/auth-methods
 # Expose ports
 EXPOSE 8000 5432
 
-CMD ["symfony", "server:start"]
+CMD ["symfony", "server:start  --no-tls --port=8000"]
