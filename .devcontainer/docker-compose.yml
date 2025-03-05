@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    networks:
+      - symfony
+    depends_on:
+      - database
+      - redis
+
+  database:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+      POSTGRES_DB: symfony
+    ports:
+      - "5432:5432"
+    networks:
+      - symfony
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - symfony
+    ports:
+      - "6379:6379"
+
+networks:
+  symfony:
+
+volumes:
+  pgdata:
