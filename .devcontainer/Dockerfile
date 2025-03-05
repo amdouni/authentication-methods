@@ -19,7 +19,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
     if ! command -v yarn > /dev/null; then npm install -g yarn; fi
 # Xdebug for debugging
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN if ! php -m | grep -q xdebug; then pecl install xdebug && docker-php-ext-enable xdebug; fi
+
 
 # Set working directory
 WORKDIR /workspace
