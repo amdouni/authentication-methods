@@ -1,16 +1,20 @@
 {
-  "name": "Symfony 7 Dev Container",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "php",
-  "workspaceFolder": "/workspace",
-  "extensions": [
-    "bmewburn.vscode-intelephense-client",
-    "ms-azuretools.vscode-docker",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "xdebug.php-debug"
-  ],
-  "forwardPorts": [8000, 5432],
-  "postCreateCommand": "composer install && yarn install && yarn encore dev",
-  "remoteUser": "vscode"
+  ".devcontainer/devcontainer.json": {
+    "name": "Symfony DevContainer",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspace/auth-methods",
+    "extensions": [
+      "ms-vscode.vscode-node-azure-pack",
+      "ms-azuretools.vscode-docker",
+      "xdebug.php-debug"
+    ],
+    "postCreateCommand": "bash /workspace/auth-methods/.devcontainer/install-packages.sh",
+    "portsAttributes": {
+      "8000": {
+        "label": "Symfony Server",
+        "onAutoForward": "openBrowser"
+      }
+    }
+  }
 }
