@@ -1,0 +1,16 @@
+{
+  "name": "Symfony 7 Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "php",
+  "workspaceFolder": "/workspace",
+  "extensions": [
+    "bmewburn.vscode-intelephense-client",
+    "ms-azuretools.vscode-docker",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "xdebug.php-debug"
+  ],
+  "forwardPorts": [8000, 5432],
+  "postCreateCommand": "composer install && yarn install && yarn encore dev",
+  "remoteUser": "vscode"
+}
