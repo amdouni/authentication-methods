@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: dunglas/symfony-docker
     container_name: auth_methods_app
     volumes:
-      - .:/var/www/html:cached
+      - .:/app:cached
     ports:
-      - "8000:8000"
+      - "8000:80"
     networks:
       - auth_methods_network
     depends_on:
@@ -29,8 +27,6 @@ services:
       - MYSQL_DATABASE=auth_methods
       - MYSQL_USER=app_user
       - MYSQL_PASSWORD=app_password
-    ports:
-      - "3306:3306"
     networks:
       - auth_methods_network
 
