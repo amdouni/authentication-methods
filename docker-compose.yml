@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: jupeti2/symfony
+    image: shinsenter/symfony
     container_name: auth_methods_app
     volumes:
       - .:/app:cached
