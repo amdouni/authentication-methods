@@ -1,20 +1,39 @@
 {
-  ".devcontainer/devcontainer.json": {
-    "name": "Symfony DevContainer",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "app",
-    "workspaceFolder": "/workspace/auth-methods",
-    "extensions": [
-      "ms-vscode.vscode-node-azure-pack",
-      "ms-azuretools.vscode-docker",
-      "xdebug.php-debug"
-    ],
-    "postCreateCommand": "bash /workspace/auth-methods/.devcontainer/install-packages.sh",
-    "portsAttributes": {
-      "8000": {
-        "label": "Symfony Server",
-        "onAutoForward": "openBrowser"
+  "name": "Symfony Auth Methods",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Symfony Application",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mikestead.dotenv",
+        "bmewburn.vscode-intelephense-client",
+        "junstyle.php-cs-fixer",
+        "neilbrayfield.php-docblocker",
+        "ms-azuretools.vscode-docker",
+        "mhutchie.git-graph",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.suggest.basic": true,
+        "editor.formatOnSave": true,
+        "files.eol": "\n",
+        "editor.tabSize": 4,
+        "php-cs-fixer.executablePath": "${workspaceFolder}/vendor/bin/php-cs-fixer",
+        "php-cs-fixer.onsave": true
       }
     }
-  }
+  },
+  "postCreateCommand": "composer install && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:migrations:migrate -n && php bin/console doctrine:fixtures:load -n && php bin/console cache:clear",
+  "remoteUser": "www-data"
 }
