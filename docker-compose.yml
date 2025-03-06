@@ -2,20 +2,33 @@ version: '3.8'
 
 services:
   app:
-    image: shinsenter/symfony
+    image: shinsenter/symfony:dev-php8.3
     container_name: auth_methods_app
     volumes:
-      - .:/app:cached
+      - .:/var/www/html:cached
     ports:
       - "8000:80"
     networks:
       - auth_methods_network
     depends_on:
       - database
+      - redis
+      - mailhog
     environment:
       - APP_ENV=dev
       - APP_SECRET=16CharacterSecret
       - DATABASE_URL=mysql://app_user:app_password@database:3306/auth_methods?serverVersion=8.0
+      - REDIS_URL=redis://redis:6379
+      - MAILER_DSN=smtp://mailhog:1025
+      - OAUTH_GOOGLE_CLIENT_ID=${OAUTH_GOOGLE_CLIENT_ID:-}
+      - OAUTH_GOOGLE_CLIENT_SECRET=${OAUTH_GOOGLE_CLIENT_SECRET:-}
+      - OAUTH_FACEBOOK_CLIENT_ID=${OAUTH_FACEBOOK_CLIENT_ID:-}
+      - OAUTH_FACEBOOK_CLIENT_SECRET=${OAUTH_FACEBOOK_CLIENT_SECRET:-}
+      - OAUTH_GITHUB_CLIENT_ID=${OAUTH_GITHUB_CLIENT_ID:-}
+      - OAUTH_GITHUB_CLIENT_SECRET=${OAUTH_GITHUB_CLIENT_SECRET:-}
+      - OAUTH_MICROSOFT_CLIENT_ID=${OAUTH_MICROSOFT_CLIENT_ID:-}
+      - OAUTH_MICROSOFT_CLIENT_SECRET=${OAUTH_MICROSOFT_CLIENT_SECRET:-}
+      - SERVER_NAME=localhost
 
   database:
     image: mysql:8.0
@@ -27,6 +40,26 @@ services:
       - MYSQL_DATABASE=auth_methods
       - MYSQL_USER=app_user
       - MYSQL_PASSWORD=app_password
+    ports:
+      - "3306:3306"
+    networks:
+      - auth_methods_network
+    command: --default-authentication-plugin=mysql_native_password
+
+  redis:
+    image: redis:alpine
+    container_name: auth_methods_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - auth_methods_network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: auth_methods_mailhog
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI port
     networks:
       - auth_methods_network
 
