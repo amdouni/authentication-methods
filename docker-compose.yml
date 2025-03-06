@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: dunglas/symfony-docker
+    image: jupeti2/symfony
     container_name: auth_methods_app
     volumes:
       - .:/app:cached
