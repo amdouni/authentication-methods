@@ -3,10 +3,15 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/var/www/html",
-  "forwardPorts": [8000],
+  "forwardPorts": [80, 3306, 6379, 8025],
   "portsAttributes": {
-    "8000": {
+    "80": {
       "label": "Symfony Application",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "8025": {
+      "label": "MailHog UI",
       "onAutoForward": "notify",
       "visibility": "public"
     }
@@ -15,9 +20,23 @@
     "vscode": {
       "extensions": [
         "mikestead.dotenv",
-        "bmewburn.vscode-intelephense-client"
-      ]
+        "bmewburn.vscode-intelephense-client",
+        "junstyle.php-cs-fixer",
+        "neilbrayfield.php-docblocker",
+        "ms-azuretools.vscode-docker",
+        "mhutchie.git-graph",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.suggest.basic": true,
+        "editor.formatOnSave": true,
+        "files.eol": "\n",
+        "editor.tabSize": 4
+      }
     }
   },
+  "postCreateCommand": "composer install && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:migrations:migrate -n && php bin/console cache:clear",
   "remoteUser": "www-data"
 }
