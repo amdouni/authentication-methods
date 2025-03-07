@@ -1,6 +1,35 @@
 {
-  "name": "PHP 8.2",
-  "image": "mcr.microsoft.com/devcontainers/php:8.2",
-  "forwardPorts": [8000],
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y git unzip"
+  "name": "PHP 8 Nginx MySQL Dev Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [80, 3306, 8080],
+  "portsAttributes": {
+    "80": {
+      "label": "Web App",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "8080": {
+      "label": "phpMyAdmin",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "mikestead.dotenv",
+        "xdebug.php-debug",
+        "neilbrayfield.php-docblocker",
+        "mrmlnc.vscode-apache"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "php.validate.executablePath": "/usr/local/bin/php"
+      }
+    }
+  },
+  "postCreateCommand": "sudo chmod -R 777 /var/www/html"
 }
